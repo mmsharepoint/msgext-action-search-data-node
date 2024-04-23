@@ -16,3 +16,28 @@ body {
     width: fit-content;
   }
 }
+
+.tmRow {
+  display: table-row;
+}
+.tmCol11 {
+  display: table-cell;
+  width: 92%;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+.tmCol9 {
+  display: table-cell;
+  width: 75%;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.tmCol3 {
+  display: table-cell;
+  width: 25%;
+  padding-right: 8px;
+}
+.tmCol1 {
+  display: table-cell;
+  width: 8%;
+}

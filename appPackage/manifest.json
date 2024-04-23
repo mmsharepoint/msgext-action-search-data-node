@@ -34,19 +34,7 @@
     "composeExtensions": [
         {
             "botId": "${{BOT_ID}}",
-            "commands": [
-              {
-                "id": "selectItem",
-                "context": [
-                  "compose",
-                  "message",
-                  "commandBox"
-                ],
-                "description": "Command to select product from a list",
-                "title": "Select Product",
-                "type": "action",
-                "fetchTask": true
-              },
+            "commands": [              
               {
                 "id": "selectItem",
                 "context": [

@@ -21,14 +21,14 @@ export async function getAllProducts(
   const productEntities = await tableClient.listEntities<IProduct>();
   let i = 1;
   for await (const p of productEntities) {
-      const product = {
-          Id: p.partitionKey,
-          Name: p.rowKey,
-          Orders: p.Orders as number,
-          Category: p.Category as string
-      }
-      products.push(product);      
-      i++;
+    const product = {
+      Id: p.partitionKey,
+      Name: p.rowKey,
+      Orders: p.Orders as number,
+      Category: p.Category as string
+    }
+    products.push(product);      
+    i++;
   }
   res.body = JSON.stringify(products);
   return res; 
