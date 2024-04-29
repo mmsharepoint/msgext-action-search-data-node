@@ -4,9 +4,13 @@ import {
   TurnContext,
   MessagingExtensionAction,
   MessagingExtensionActionResponse,
+  AdaptiveCardInvokeResponse,
+  AdaptiveCardInvokeValue,
+  MessageFactory,
 } from "botbuilder";
 import * as ACData from "adaptivecards-templating";
-import helloWorldCard from "./adaptiveCards/helloWorldCard.json";
+import DisplayProductOrder from "./adaptiveCards/DisplayProductOrder.json";
+import OderCard from "./adaptiveCards/OrderForm.json";
 
 export class ActionApp extends TeamsActivityHandler {
   //Action
@@ -14,13 +18,13 @@ export class ActionApp extends TeamsActivityHandler {
     context: TurnContext,
     action: MessagingExtensionAction
   ): Promise<MessagingExtensionActionResponse> {
-    // The user has chosen to create a card by choosing the 'Create Card' context menu command.
-    const template = new ACData.Template(helloWorldCard);
+    
+    const template = new ACData.Template(OderCard);
     const card = template.expand({
       $root: {
-        title: action.data.title ?? "",
-        subTitle: action.data.subTitle ?? "",
-        text: action.data.text ?? "",
+        Id: action.data.product.Id ?? "",
+        Name: action.data.product.Name ?? "",
+        Orders: action.data.product.Orders ?? "",
       },
     });
     const attachment = CardFactory.adaptiveCard(card);
@@ -49,5 +53,48 @@ export class ActionApp extends TeamsActivityHandler {
     }
 
     return resp;
-  }  
+  }
+  public async onAdaptiveCardInvoke(_context: TurnContext, _invokeValue: AdaptiveCardInvokeValue): Promise<AdaptiveCardInvokeResponse> {      
+    let item = JSON.stringify(_invokeValue.action.data);
+    console.log(item);
+
+    const prodId = new String(_invokeValue.action.data.Id ?? "");
+    const prodName = new String(_invokeValue.action.data.Name ?? "");
+    const prodOrders: Number = new Number(_invokeValue.action.data.Orders ?? 0);
+    const prodAddOrders1: Number = new Number(_invokeValue.action.data.orderId ?? 0);
+    const prodAddOrders2: Number = new Number(_invokeValue.action.data.orderId1 ?? 0);
+    const prodAddOrders3: Number = new Number(_invokeValue.action.data.orderId2 ?? 0);
+    const prodAddOrders4: Number = new Number(_invokeValue.action.data.orderId3 ?? 0);
+    const prodAddOrders5: Number = new Number(_invokeValue.action.data.orderId4 ?? 0);
+    const newProduductOders = prodOrders.valueOf() + 
+                              prodAddOrders1.valueOf() + 
+                              prodAddOrders2.valueOf() +
+                              prodAddOrders3.valueOf() +
+                              prodAddOrders4.valueOf() +
+                              prodAddOrders5.valueOf();
+    // const verb: string = _invokeValue.action.verb;
+    
+        // Update Orders
+        // ProductController productCtrl = new ProductController(_config);
+        // Product resultProduct = productCtrl.UpdateProductOrders(actionData);
+
+    const template = new ACData.Template(OderCard);
+    const card = template.expand({
+      $root: {
+        Id: prodId,
+        Name: prodName,
+        Orders: newProduductOders.toString()
+      },
+    });
+    const attachment = CardFactory.adaptiveCard(card);
+    var messageActivity = MessageFactory.attachment(attachment);
+    await _context.sendActivity(messageActivity);
+
+    const resp: AdaptiveCardInvokeResponse = {
+      statusCode: 200,
+      value: null,
+      type: "result"
+    }
+    return Promise.resolve(resp);
+  }
 }

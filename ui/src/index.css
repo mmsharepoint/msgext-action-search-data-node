@@ -17,6 +17,13 @@ body {
   }
 }
 
+.tmContainer {
+  display: grid;
+  margin-top: 8px;
+  margin-left: 12px;
+  margin-right: 12px;
+}
+
 .tmRow {
   display: table-row;
 }
@@ -40,4 +47,8 @@ body {
 .tmCol1 {
   display: table-cell;
   width: 8%;
+}
+.sbmBtn {
+  min-height: 24px;
+  margin: 8px;
 }

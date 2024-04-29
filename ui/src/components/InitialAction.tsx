@@ -1,8 +1,8 @@
 import React from "react";
-import { Button, Radio, RadioGroup } from "@fluentui/react-components";
-import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
-import { DetailsList, DetailsRow, IColumn, IDetailsRowProps, IDetailsRowStyles } from '@fluentui/react/lib/DetailsList';
-
+import { PrimaryButton } from "@fluentui//react/lib/Button";
+import { ChoiceGroup, IChoiceGroupOption } from "@fluentui/react/lib/ChoiceGroup";
+import { DetailsList, DetailsRow, IColumn, IDetailsRowProps, IDetailsRowStyles, Selection } from '@fluentui/react/lib/DetailsList';
+import { app, dialog } from "@microsoft/teams-js";
 import Axios from "axios";
 import IProduct from "../../Model/IProduct";
 
@@ -12,17 +12,39 @@ import IProduct from "../../Model/IProduct";
  * about tab.
  */
 const InitialAction: React.FC<{}> = () =>  {
-  const [options, setOptions] = React.useState<IDropdownOption[]>([]);
   const [products, setProducts] = React.useState<IProduct[]>([]);
-  const [selectedproduct, setSelectedProduct] = React.useState<IProduct>();
+  const [selectedproduct, setSelectedProduct] = React.useState<IProduct | undefined>();
+  const [selectedProductKey, setSelectedProductKey] = React.useState<number | undefined>();
+  const [selectedCategory, setSelectedCategory] = React.useState<string | undefined>('');
+
+  let selection: Selection = new Selection({
+    onSelectionChanged: () => { setSelectedProductKey(selection.getSelectedCount()) 
+  }
+  });
 
   const columns = [
     { key: 'column1', name: 'Name', fieldName: 'Name', minWidth: 60, maxWidth: 120, isResizable: true },
     { key: 'column2', name: 'Category', fieldName: 'Category', minWidth: 150, maxWidth: 150, isResizable: true },
   ];
 
-  const loadProducts = () => {
-    Axios.get(`${process.env.REACT_APP_FUNC_ENDPOINT}/api/getallproducts/`,{
+  const options: IChoiceGroupOption[] = [
+    { key: 'All', text: 'All' },
+    { key: 'Merch', text: 'Merch' },
+    { key: 'Electronics', text: 'Electronics' },
+    { key: 'D', text: 'Option D', disabled: true },
+  ];
+
+  const loadContext = async () => {
+    await app.initialize();
+    const context = await app.getContext();
+  };
+
+  const loadProducts = (srchStrng: string) => {
+    let requestUrl = `${process.env.REACT_APP_FUNC_ENDPOINT}/api/getallproducts`;
+    if (srchStrng !== '') {
+      requestUrl += `?category=${srchStrng}`;
+    }
+    Axios.get(requestUrl,{
                 responseType: "json"                
     }).then(result => {
       if (result.data) {
@@ -57,64 +79,52 @@ const InitialAction: React.FC<{}> = () =>  {
     return <span></span>;
   };
 
-  const docSelected = (item: any): void => {    
-    // if (props.isTeamsMessagingExtension) {
-    //   props.teamsContext.teamsJs.tasks.submitTask(item);
-    // }
-    console.log(item.name);
+  const docExecuted = (item: any): void => {    
+    const product: IProduct = { Id: item.Id, Name: item.Name, Category: item.Category, Orders: item.Orders };
+    setSelectedProduct(product);
+    dialog.url.submit({product: product});
   };
 
-  React.useEffect(() => {
-    loadProducts();
+  const onCategoryChange = React.useCallback((ev: any, option: IChoiceGroupOption | undefined) => {
+    setSelectedCategory(option!.key);
   }, []);
 
   React.useEffect(() => {
-    const opts: IDropdownOption[] = [];
-    console.log(products);
-    products.forEach((p) => {
-      opts.push(
-        { key: p.Id, text: p.Name }
-      )
-    });
-    setOptions(opts);
-  }, [products]);
+    loadContext();
+    loadProducts('');
+  }, []);
+
+  React.useEffect(() => {
+    loadProducts(selectedCategory!);
+  }, [selectedCategory]);
 
   return (
     <div>
-      <div className="tmContainer tmContainer-md tmContainer-sm">
+      <div className="tmContainer">
         <div className="tmRow">
           <div className="tmCol9">
-            <Dropdown options={options}>                 
-                
-            </Dropdown>
             <DetailsList
               items={products}
               columns={columns}
               onRenderItemColumn={renderItemColumn}
-              // eslint-disable-next-line react/jsx-no-bind            
+              // eslint-disable-next-line react/jsx-no-bind
               onRenderRow={renderRow}
-              onItemInvoked={docSelected}
-            />
-            <Button appearance="primary" disabled>Submit Order</Button>
+              onItemInvoked={docExecuted}
+              selection={selection}
+            />        
           </div>
           <div className="tmCol3">
-            <RadioGroup name="DataSrc" layout="horizontal" required >
-              <Radio value="all" label="All" />
-              <Radio value="onsale" label="On sale" />
-              <Radio value="bestseller" label="Bestseller" />
-              <Radio value="lowstock" label="Low stock" />
-            </RadioGroup>
-
-            <p>
-              <label id="prodName"
-                      className="hiddenLabel"
-                      aria-hidden="true"
-                      data-name="@SelectedItem?.Name"
-                      data-prodid="@SelectedItem?.Id"
-                      data-orders="@SelectedItem?.Orders"
-                      data-orderable="@SelectedItem?.Orderable"></label>
-            </p>
-              
+            <ChoiceGroup name="DataSrc" required options={options} onChange={onCategoryChange} >
+            
+            </ChoiceGroup>
+  
+          </div>
+        </div>
+        <div className="tmRow">
+          <div className="tmCol9">
+            <div className="sbmBtn">
+              <PrimaryButton text="Submit" title="Submit" disabled={selectedProductKey!>0} onClick={docExecuted}/>
+            </div>
           </div>
         </div>
       </div>

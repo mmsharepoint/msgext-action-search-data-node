@@ -1,4 +1,4 @@
-import { AzureNamedKeyCredential, TableClient } from "@azure/data-tables";
+import { AzureNamedKeyCredential, TableClient, odata } from "@azure/data-tables";
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import IProduct from "../../Model/IProduct";
 
@@ -16,9 +16,19 @@ export async function getAllProducts(
   const storageAccountKey: string = process.env.AZURE_TABLE_KEY!;
   const storageUrl = `https://${accountName}.table.core.windows.net/`;
   const tableClient = new TableClient(storageUrl, "Products2", new AzureNamedKeyCredential(accountName, storageAccountKey));
-  
   const products: IProduct[] = [];
-  const productEntities = await tableClient.listEntities<IProduct>();
+
+  let productEntities: any;
+  if (req.query.size === 0 || req.query.get('category') === 'All') {
+    productEntities = await tableClient.listEntities<IProduct>();
+  }
+  else {
+    const srchStr = req.query.get('category');
+    productEntities = await tableClient.listEntities<IProduct>({
+      queryOptions: { filter: odata`Category ge ${srchStr}` }
+    });
+  }
+
   let i = 1;
   for await (const p of productEntities) {
     const product = {
