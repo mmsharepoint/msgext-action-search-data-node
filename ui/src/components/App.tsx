@@ -7,11 +7,8 @@ import {
   Spinner,
   tokens,
 } from "@fluentui/react-components";
-import { HashRouter as Router, Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { useTeamsUserCredential } from "@microsoft/teamsfx-react";
-import Privacy from "./Privacy";
-import TermsOfUse from "./TermsOfUse";
-import Tab from "./Tab";
 import { TeamsFxContext } from "./Context";
 import config from "./sample/lib/config";
 import InitialAction from "./InitialAction";
@@ -44,12 +41,10 @@ export default function App() {
           {loading ? (
             <Spinner style={{ margin: 100 }} />
           ) : (
-            <Routes>
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/termsofuse" element={<TermsOfUse />} />
-              <Route path="/tab" element={<Tab />} />
+            <Routes>              
+              {/* <Route path="/tab" element={<Tab />} /> */}
               <Route path="/initialaction" element={<InitialAction />} />
-              <Route path="*" element={<Navigate to={"/tab"} />}></Route>
+              {/* <Route path="*" element={<Navigate to={"/tab"} />}></Route> */}
             </Routes>
           )}
         </Router>

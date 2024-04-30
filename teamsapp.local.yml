@@ -176,6 +176,9 @@ deploy:
       envs:
         BOT_ID: ${{BOT_ID}}
         BOT_PASSWORD: ${{SECRET_BOT_PASSWORD}}
+        TAB_ENDPOINT: ${{TAB_ENDPOINT}}
+        AZURE_TABLE_ACCOUNTNAME: ${{AZURE_TABLE_ACCOUNTNAME}}
+        AZURE_TABLE_KEY: ${{AZURE_TABLE_KEY}}
 
   # Generate runtime environment variables for backend
   - uses: file/createOrUpdateEnvironmentFile

@@ -36,7 +36,6 @@ const InitialAction: React.FC<{}> = () =>  {
 
   const loadContext = async () => {
     await app.initialize();
-    const context = await app.getContext();
   };
 
   const loadProducts = (srchStrng: string) => {
@@ -114,16 +113,13 @@ const InitialAction: React.FC<{}> = () =>  {
             />        
           </div>
           <div className="tmCol3">
-            <ChoiceGroup name="DataSrc" required options={options} onChange={onCategoryChange} >
-            
-            </ChoiceGroup>
-  
+            <ChoiceGroup name="DataSrc" required options={options} onChange={onCategoryChange} />
           </div>
         </div>
         <div className="tmRow">
           <div className="tmCol9">
             <div className="sbmBtn">
-              <PrimaryButton text="Submit" title="Submit" disabled={selectedProductKey!>0} onClick={docExecuted}/>
+              <PrimaryButton text="Submit" title="Submit" disabled={selectedProductKey!<1} onClick={docExecuted}/>
             </div>
           </div>
         </div>

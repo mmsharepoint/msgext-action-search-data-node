@@ -9,11 +9,29 @@ import {
   MessageFactory,
 } from "botbuilder";
 import * as ACData from "adaptivecards-templating";
+import { updateOrders } from "./services/azServices";
 import DisplayProductOrder from "./adaptiveCards/DisplayProductOrder.json";
 import OderCard from "./adaptiveCards/OrderForm.json";
+import IProduct from "./Model/IProduct";
 
 export class ActionApp extends TeamsActivityHandler {
-  //Action
+  
+  public async handleTeamsMessagingExtensionFetchTask(_context: TurnContext, _action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
+    const taskModuleUrl = `${process.env.TAB_ENDPOINT}/index.html#/initialaction`;
+    const resp: MessagingExtensionActionResponse = {
+      task: {
+        type: 'continue',
+        value: {
+          width: "large",
+          height: "medium",
+          title: "Select a Product",
+          url: taskModuleUrl
+        }
+      }
+    }
+    return resp;
+  }
+
   public async handleTeamsMessagingExtensionSubmitAction(
     context: TurnContext,
     action: MessagingExtensionAction
@@ -37,53 +55,17 @@ export class ActionApp extends TeamsActivityHandler {
     };
   }
 
-  public async handleTeamsMessagingExtensionFetchTask(_context: TurnContext, _action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
-    // const taskModuleUrl = `${process.env.BOT_ENDPOINT}:53000/index.html#/initialaction`;
-    const taskModuleUrl = "https://localhost:53000/index.html#/initialaction";
-    const resp: MessagingExtensionActionResponse = {
-      task: {
-        type: 'continue',
-        value: {
-          width: "large",
-          height: "medium",
-          title: "Select a Product",
-          url: taskModuleUrl
-        }
-      }
-    }
-
-    return resp;
-  }
   public async onAdaptiveCardInvoke(_context: TurnContext, _invokeValue: AdaptiveCardInvokeValue): Promise<AdaptiveCardInvokeResponse> {      
-    let item = JSON.stringify(_invokeValue.action.data);
-    console.log(item);
-
-    const prodId = new String(_invokeValue.action.data.Id ?? "");
-    const prodName = new String(_invokeValue.action.data.Name ?? "");
-    const prodOrders: Number = new Number(_invokeValue.action.data.Orders ?? 0);
-    const prodAddOrders1: Number = new Number(_invokeValue.action.data.orderId ?? 0);
-    const prodAddOrders2: Number = new Number(_invokeValue.action.data.orderId1 ?? 0);
-    const prodAddOrders3: Number = new Number(_invokeValue.action.data.orderId2 ?? 0);
-    const prodAddOrders4: Number = new Number(_invokeValue.action.data.orderId3 ?? 0);
-    const prodAddOrders5: Number = new Number(_invokeValue.action.data.orderId4 ?? 0);
-    const newProduductOders = prodOrders.valueOf() + 
-                              prodAddOrders1.valueOf() + 
-                              prodAddOrders2.valueOf() +
-                              prodAddOrders3.valueOf() +
-                              prodAddOrders4.valueOf() +
-                              prodAddOrders5.valueOf();
     // const verb: string = _invokeValue.action.verb;
-    
-        // Update Orders
-        // ProductController productCtrl = new ProductController(_config);
-        // Product resultProduct = productCtrl.UpdateProductOrders(actionData);
+    const cardData: Record<string, unknown> =  _invokeValue.action.data;
+    const prodUpdate: IProduct = await updateOrders(cardData);
 
-    const template = new ACData.Template(OderCard);
+    const template = new ACData.Template(DisplayProductOrder);
     const card = template.expand({
       $root: {
-        Id: prodId,
-        Name: prodName,
-        Orders: newProduductOders.toString()
+        Id: prodUpdate.Id,
+        Name: prodUpdate.Name,
+        Orders: prodUpdate.Orders.toString()
       },
     });
     const attachment = CardFactory.adaptiveCard(card);
