@@ -23,7 +23,7 @@ export class ActionApp extends TeamsActivityHandler {
         type: 'continue',
         value: {
           width: "large",
-          height: "medium",
+          height: "large",
           title: "Select a Product",
           url: taskModuleUrl
         }

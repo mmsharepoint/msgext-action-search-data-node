@@ -1,4 +1,4 @@
-import { AzureNamedKeyCredential, TableClient, odata } from "@azure/data-tables";
+import { AzureNamedKeyCredential, TableClient } from "@azure/data-tables";
 import IProduct from "../Model/IProduct";
 
 const getTableClient = (): TableClient  => {
@@ -34,6 +34,7 @@ export async function updateOrders(data: Record<string, unknown>) {
   await tableClient.upsertEntity(tableEntity);
 
   const returnProduct: IProduct = { Id: prodId.toString(), Name: prodName.toString(), Orders: newProduductOders, Category: ''};
+
   return returnProduct
 }
 
