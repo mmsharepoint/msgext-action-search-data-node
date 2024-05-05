@@ -41,6 +41,7 @@ export class ActionApp extends TeamsActivityHandler {
     const card = template.expand({
       $root: {
         Id: action.data.product.Id ?? "",
+        Category: action.data.product.Category ?? "",
         Name: action.data.product.Name ?? "",
         Orders: action.data.product.Orders ?? "",
       },
@@ -63,7 +64,7 @@ export class ActionApp extends TeamsActivityHandler {
     const template = new ACData.Template(DisplayProductOrder);
     const card = template.expand({
       $root: {
-        Id: prodUpdate.Id,
+        Category: prodUpdate.Category,
         Name: prodUpdate.Name,
         Orders: prodUpdate.Orders.toString()
       },

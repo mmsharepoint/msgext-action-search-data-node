@@ -19,13 +19,14 @@ body {
 
 .tmContainer {
   display: grid;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-left: 12px;
   margin-right: 12px;
 }
 
 .tmRow {
   display: table-row;
+  margin-top: 6px;
 }
 .tmCol11 {
   display: table-cell;
@@ -39,6 +40,11 @@ body {
   padding-left: 16px;
   padding-right: 16px;
 }
+.tmCol4 {
+  display: table-cell;
+  width: 33%;
+  padding-right: 8px;
+}
 .tmCol3 {
   display: table-cell;
   width: 25%;
@@ -47,6 +53,10 @@ body {
 .tmCol1 {
   display: table-cell;
   width: 8%;
+}
+.listCol1 {
+  font-size: 1.1em;
+  font-weight: 600;
 }
 .sbmBtn {
   min-height: 24px;

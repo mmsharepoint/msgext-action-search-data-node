@@ -5,11 +5,11 @@
         "type": "TextBlock",
         "size": "Medium",
         "weight": "Bolder",
-        "text": "${Id}"
+        "text": "${Name}"
       },
       {
         "type": "TextBlock",
-        "text": "${Name}",
+        "text": "${Category}",
         "wrap": true
       },
       {
@@ -129,6 +129,7 @@
         "verb": "order",
         "data": {
           "Id": "${Id}",
+          "Category": "${Category}",
           "Name": "${Name}",
           "Orders": "${Orders}"
         }

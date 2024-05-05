@@ -5,6 +5,23 @@ Teams/M365 messaging extension app handling (action-based) data retrieval and wr
 This sample is a Teams and M365 Messaging Extension app created using the Teams Toolkit for Visual Studio Code. It is also intended to be used in Copilot. It retrieves a list of products to be further dealt with: Overview listed, order e.g. while all sent with Adaptive Cards in Teams or Outlook, resp Copilot ...started with the React with Fluent UI template.
 It makes use of several Teams Dev capabilities (Tap with FluentUI, Azure Function, Messaging Extension)
 
+
+App result:
+
+|Task Module to select a product|
+:-------------------------:
+![Task Module to select a product](assets/01InitialTaskModule.png)
+
+|Order Card result with weekday order option|
+:-------------------------:
+![Order Card Result with weekday order option](assets/02OrderAdativeCard.png)
+
+
+|Disday Order Card result|
+:-------------------------:
+![Disday Order Card result](assets/03DisplayOrderResult.png)
+
+
 ## Tools and Frameworks
 
 ![drop](https://img.shields.io/badge/Teams&nbsp;Toolkit&nbsp;for&nbsp;VS&nbsp;Code-5.7-green.svg)
