@@ -1,8 +1,5 @@
 import React from "react";
-import { PrimaryButton } from "@fluentui//react/lib/Button";
-import { ChoiceGroup, IChoiceGroupOption } from "@fluentui/react/lib/ChoiceGroup";
-import { Radio, RadioGroup, Button } from "@fluentui/react-components";
-import { SelectionItemId, Skeleton, SkeletonItem } from "@fluentui/react-components";
+import { Radio, RadioGroup, Button, RadioGroupOnChangeData, SelectionItemId, Skeleton, SkeletonItem } from "@fluentui/react-components";
 import { List, ListItem } from "@fluentui/react-list-preview";
 import { app, dialog } from "@microsoft/teams-js";
 import Axios from "axios";
@@ -14,12 +11,12 @@ import IProduct from "../../Model/IProduct";
  * about tab.
  */
 const InitialAction: React.FC<{}> = () =>  {
-  const [categories, setCategories] = React.useState<IChoiceGroupOption[]>([]);
+  const [categories, setCategories] = React.useState<string[]>([]);
   const [products, setProducts] = React.useState<IProduct[]>([]);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [selectedItems, setSelectedItems] = React.useState<SelectionItemId[]>([]);
   const [selectedProduct, setSelectedProduct] = React.useState<IProduct | undefined>();
-  const [selectedCategory, setSelectedCategory] = React.useState<string | undefined>('');
+  const [selectedCategory, setSelectedCategory] = React.useState<string | undefined>('All');
 
   const loadContext = async () => {
     await app.initialize();
@@ -37,11 +34,11 @@ const InitialAction: React.FC<{}> = () =>  {
       if (result.data) {
         setProducts(result.data);
         // Extract distinct categories
-        const cats: IChoiceGroupOption[] = [{ key: 'All', text: 'All' }];
+        const cats: string[] = ['All'];
         for (const p of result.data) {
-          var index = cats.map(function(e) { return e.text; }).indexOf(p.Category);
+          var index = cats.map(function(e) { return e; }).indexOf(p.Category);
           if (index < 0) {
-            cats.push({ key: p.Category, text: p.Category });
+            cats.push(p.Category);
           }
         }
         setCategories(cats);
@@ -55,8 +52,8 @@ const InitialAction: React.FC<{}> = () =>  {
     });
   };
 
-  const onCategoryChange = React.useCallback((ev: any, option: IChoiceGroupOption | undefined) => {
-    setSelectedCategory(option!.key);
+  const onCategoryChange = React.useCallback((ev: any, option: RadioGroupOnChangeData | undefined) => {
+    setSelectedCategory(option?.value);
   }, []);
 
   const btnClicked  = React.useCallback(() => {
@@ -77,6 +74,8 @@ const InitialAction: React.FC<{}> = () =>  {
       <div className="tmContainer">
         <div className="tmRow">
           <div className="tmCol9">
+            <div className="tmCol4 listHeader">Product</div>
+            <div className="tmCol3 listHeader">Category</div>
             <List
               selectionMode="single"
               selectedItems={selectedItems}
@@ -91,7 +90,7 @@ const InitialAction: React.FC<{}> = () =>  {
                   }
                 });
               }}
-            >
+            >                
               {products.map(({ Id, Name, Category }) => (
                 <ListItem key={Id} value={Id} aria-label={Name}>
                   <div className="tmCol4 listCol1">{Name}</div>
@@ -101,7 +100,9 @@ const InitialAction: React.FC<{}> = () =>  {
             </List>
           </div>
           <div className="tmCol3">
-            <ChoiceGroup name="DataSrc" required options={categories} defaultSelectedKey="All" onChange={onCategoryChange} />
+            <RadioGroup as="div" value={selectedCategory} onChange={onCategoryChange}>
+              {categories.map(c => <Radio value={c} label={c}></Radio>)}
+            </RadioGroup>
           </div>
         </div>
         {isLoading ?? <div className="tmRow">
@@ -129,7 +130,10 @@ const InitialAction: React.FC<{}> = () =>  {
         <div className="tmRow">
           <div className="tmCol9">
             <div className="sbmBtn">
-              <PrimaryButton text="Submit" title="Submit" disabled={selectedProduct === undefined} onClick={btnClicked}/>
+              {/* <PrimaryButton text="Submit" title="Submit" disabled={selectedProduct === undefined} onClick={btnClicked}/> */}
+              <Button appearance="primary" title="Submit" disabled={selectedProduct === undefined} onClick={btnClicked}>
+                Submit
+              </Button>
             </div>
           </div>
         </div>
