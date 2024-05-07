@@ -82,7 +82,7 @@ const InitialAction: React.FC<{}> = () =>  {
               onSelectionChange={(_: any, data: any) => {
                 setSelectedItems(data.selectedItems);
                 if (data.selectedItems[0] === selectedItems[0]) {
-                  alert("Double click!");
+                  btnClicked();
                 }
                 products.forEach(p => {
                   if (p.Id === data.selectedItems[0]) {

@@ -13,6 +13,7 @@ export async function updateOrders(data: Record<string, unknown>) {
   const tableClient = getTableClient();
   const prodId = new String(data.Id ?? "");
   const prodName = new String(data.Name ?? "");
+  const prodCategory = new String(data.Category ?? "");
   const prodOrders: Number = new Number(data.Orders ?? 0);
   const prodAddOrders1: Number = new Number(data.orderId ?? 0);
   const prodAddOrders2: Number = new Number(data.orderId2 ?? 0);
@@ -33,7 +34,7 @@ export async function updateOrders(data: Record<string, unknown>) {
   };
   await tableClient.upsertEntity(tableEntity);
 
-  const returnProduct: IProduct = { Id: prodId.toString(), Name: prodName.toString(), Orders: newProduductOders, Category: ''};
+  const returnProduct: IProduct = { Id: prodId.toString(), Name: prodName.toString(), Orders: newProduductOders, Category: prodCategory.toString()};
 
   return returnProduct
 }

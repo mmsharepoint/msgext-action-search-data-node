@@ -56,8 +56,7 @@ export class ActionApp extends TeamsActivityHandler {
     };
   }
 
-  public async onAdaptiveCardInvoke(_context: TurnContext, _invokeValue: AdaptiveCardInvokeValue): Promise<AdaptiveCardInvokeResponse> {      
-    // const verb: string = _invokeValue.action.verb;
+  public async onAdaptiveCardInvoke(_context: TurnContext, _invokeValue: AdaptiveCardInvokeValue): Promise<AdaptiveCardInvokeResponse> {
     const cardData: Record<string, unknown> =  _invokeValue.action.data;
     const prodUpdate: IProduct = await updateOrders(cardData);
 

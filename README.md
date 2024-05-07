@@ -17,10 +17,12 @@ App result:
 ![Order Card Result with weekday order option](assets/02OrderAdativeCard.png)
 
 
-|Disday Order Card result|
+|Display Order Card result|
 :-------------------------:
-![Disday Order Card result](assets/03DisplayOrderResult.png)
+![Display Order Card result](assets/03DisplayOrderResult.png)
 
+|App in action|
+![App in action](assets/04msgext-action-search-action-node.gif)
 
 ## Tools and Frameworks
 
