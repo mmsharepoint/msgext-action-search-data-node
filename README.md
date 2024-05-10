@@ -22,6 +22,7 @@ App result:
 ![Display Order Card result](assets/03DisplayOrderResult.png)
 
 |App in action|
+:-------------------------:
 ![App in action](assets/04msgext-action-search-action-node.gif)
 
 ## Tools and Frameworks
@@ -34,14 +35,14 @@ App result:
 
 ## Applies to
 
-This sample was created [using the Teams Toolkit with Visual Studio 2022](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/teams-toolkit-fundamentals?WT.mc_id=M365-MVP-5004617). Nearly the same sample was also realized with the [using the Teams Toolkit with Visual Studio 2022](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/toolkit-v4/teams-toolkit-fundamentals-vs?WT.mc_id=M365-MVP-5004617)
+This sample was created [using the Teams Toolkit with Visual Studio Code](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/teams-toolkit-fundamentals?WT.mc_id=M365-MVP-5004617). Nearly the same [sample](https://github.com/mmsharepoint/msgext-action-search-data) was also realized with the [using the Teams Toolkit with Visual Studio 2022](https://learn.microsoft.com/en-us/microsoftteams/platform/toolkit/toolkit-v4/teams-toolkit-fundamentals-vs?WT.mc_id=M365-MVP-5004617)
 
 
 ## Version history
 
 Version|Date|Author|Comments
 -------|----|--------|--------
-1.0|May 31, 2024|[Markus Moeller](http://www.twitter.com/moeller2_0)|Initial release
+1.0|May 07, 2024|[Markus Moeller](http://www.twitter.com/moeller2_0)|Initial release
 
 ## Disclaimer
 
@@ -51,13 +52,12 @@ Version|Date|Author|Comments
 ## Minimal Path to Awesome
 - Clone the repository
     ```bash
-    git clone https://github.com/
+    git clone https://github.com/mmsharepoint/msgext-action-search-data-node.git
 
 1. First, select the Teams Toolkit icon on the left in the VS Code toolbar.
 2. In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
 3. Press F5 to start debugging which launches your app in Teams using a web browser. Select `Debug in Teams (Edge)` or `Debug in Teams (Chrome)`.
 4. When Teams launches in the browser, select the Add button in the dialog to install your app to Teams.
+5. Run the Messaging Extesion from the offered Chat window
 
 **Congratulations**! You are running an application that can now show a beautiful web page in Teams, Outlook and the Microsoft 365 app.
-
-![Personal tab demo](https://user-images.githubusercontent.com/11220663/167839153-0aef6adc-450e-4b8c-a28f-7d27005d1093.png)
