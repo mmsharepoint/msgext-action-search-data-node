@@ -50,14 +50,23 @@ Version|Date|Author|Comments
 
 ---
 ## Minimal Path to Awesome
+- Create a simple [Azure Table as described here](https://learn.microsoft.com/en-us/azure/storage/tables/table-storage-quickstart-portal?WT.mc_id=M365-MVP-5004617)
+- Create entities (PartitionKey becomes Id, RowKey becomes Name, Orders=int, Category=string)
 - Clone the repository
     ```bash
     git clone https://github.com/mmsharepoint/msgext-action-search-data-node.git
+    ```
+- Create .env.local from .env.dev
+    ```bash
+    copy .\env\.env.dev .\env\.env.local
+    ```
+- Fill in parameters from Azure Table: AZURE_TABLE_NAME, AZURE_TABLE_ACCOUNTNAME, AZURE_TABLE_ACCOUNT_KEY
 
+- In Teams Toolkit:
 1. First, select the Teams Toolkit icon on the left in the VS Code toolbar.
 2. In the Account section, sign in with your [Microsoft 365 account](https://docs.microsoft.com/microsoftteams/platform/toolkit/accounts) if you haven't already.
 3. Press F5 to start debugging which launches your app in Teams using a web browser. Select `Debug in Teams (Edge)` or `Debug in Teams (Chrome)`.
 4. When Teams launches in the browser, select the Add button in the dialog to install your app to Teams.
-5. Run the Messaging Extesion from the offered Chat window
+5. Run the Messaging Extension from the offered Chat window
 
 **Congratulations**! You are running an application that can now show a beautiful web page in Teams, Outlook and the Microsoft 365 app.
